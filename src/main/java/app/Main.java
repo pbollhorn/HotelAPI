@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import app.controllers.HotelController;
 import app.daos.HotelDao;
+import app.daos.RoomDao;
 import app.entities.Hotel;
 import app.entities.Room;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -23,6 +24,7 @@ public class Main {
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
+        RoomDao roomDao = RoomDao.getInstance(emf);
 
         Hotel h1 = new Hotel("Mågevejens Hotel", "Mågevej 1, 2400 København NV");
         h1.addRoom(new Room("101", 1000.0));

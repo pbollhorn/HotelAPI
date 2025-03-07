@@ -2,8 +2,10 @@ package app.controllers;
 
 import app.daos.HotelDao;
 import app.daos.PoemDao;
+import app.daos.RoomDao;
 import app.dtos.HotelDto;
 import app.dtos.PoemDto;
+import app.dtos.RoomDto;
 import app.exceptions.DaoException;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -13,6 +15,7 @@ import java.util.List;
 public class HotelController {
 
     private static HotelDao hotelDao = HotelDao.getInstance();
+    private static RoomDao roomDao = RoomDao.getInstance();
 
     public static void addRoutes(String resource, Javalin app) {
         app.get(resource + "/", ctx -> getAll(ctx));
@@ -20,6 +23,17 @@ public class HotelController {
         app.post(resource + "/", ctx -> create(ctx));
         app.put(resource + "/{id}", ctx -> update(ctx));
         app.delete(resource + "/{id}", ctx -> delete(ctx));
+        app.get(resource + "/{id}/room", ctx -> getAllRoomsForHotel(ctx));
+    }
+
+    private static void getAllRoomsForHotel(Context ctx) {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        try {
+            List<RoomDto> roomDtos = roomDao.readAllRoomsForHotel(id);
+            ctx.json(roomDtos);
+        } catch (DaoException e) {
+            ctx.status(500);
+        }
     }
 
     private static void getAll(Context ctx) {
