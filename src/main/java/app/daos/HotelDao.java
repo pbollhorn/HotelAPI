@@ -72,4 +72,13 @@ public class HotelDao {
         }
     }
 
+    public HotelDto readById(int id) throws DaoException {
+        try (EntityManager em = emf.createEntityManager()) {
+            Hotel hotel = em.find(Hotel.class, id);
+            return new HotelDto(hotel);
+        } catch (RuntimeException e) {
+            throw new DaoException("error in readyById");
+        }
+    }
+
 }

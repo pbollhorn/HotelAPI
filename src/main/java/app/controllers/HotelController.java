@@ -31,10 +31,15 @@ public class HotelController {
         }
     }
 
+    // TODO: Also implement 404 not found status code
     private static void getById(Context ctx) {
-//        int id = Integer.parseInt(ctx.pathParam("id"));
-//        PoemDto poemDto = poemDao.readById(id);
-//        ctx.json(poemDto);
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        try {
+            HotelDto hotelDto = hotelDao.readById(id);
+            ctx.json(hotelDto);
+        } catch (DaoException e) {
+            ctx.status(500);
+        }
     }
 
     private static void create(Context ctx) {
