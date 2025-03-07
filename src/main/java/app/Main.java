@@ -55,8 +55,6 @@ public class Main {
             app.stop(); // TODO: Necessary????????
         }));
 
-        emf.close();
-
     }
 
 }
