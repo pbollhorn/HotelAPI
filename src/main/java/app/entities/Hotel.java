@@ -12,7 +12,8 @@ import app.dtos.HotelDto;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Hotel {
+public class Hotel
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,21 +24,25 @@ public class Hotel {
     @OneToMany(cascade = CascadeType.ALL)
     Set<Room> rooms = new HashSet<>();
 
-    public void addRoom(Room room) {
-        if (room != null) {
+    public void addRoom(Room room)
+    {
+        if (room != null)
+        {
             this.rooms.add(room);
             room.setHotel(this);
         }
     }
 
-    public Hotel(String name, String address) {
+    public Hotel(String name, String address)
+    {
         this.name = name;
         this.address = address;
     }
 
     // This constructor ignores id in hotelDto
     // and also ignores rooms in hotelDto
-    public Hotel(HotelDto hotelDto){
+    public Hotel(HotelDto hotelDto)
+    {
         this.name = hotelDto.name();
         this.address = hotelDto.address();
     }

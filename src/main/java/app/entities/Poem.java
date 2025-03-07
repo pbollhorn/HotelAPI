@@ -11,7 +11,8 @@ import app.dtos.PoemDto;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Poem {
+public class Poem
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,14 +26,16 @@ public class Poem {
 
     // This constructor creates a new Poem entity from PoemDto
     // Completely ignores id in the PoemDto
-    public Poem(PoemDto poemDto) {
+    public Poem(PoemDto poemDto)
+    {
         this.name = poemDto.name();
         this.author = poemDto.author();
         this.year = poemDto.year();
         this.text = poemDto.text();
     }
 
-    public Poem(int id, PoemDto poemDto) {
+    public Poem(int id, PoemDto poemDto)
+    {
         this.id = id;
         this.name = poemDto.name();
         this.author = poemDto.author();

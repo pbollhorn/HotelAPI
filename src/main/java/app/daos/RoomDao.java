@@ -12,30 +12,37 @@ import jakarta.persistence.TypedQuery;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RoomDao {
+public class RoomDao
+{
 
     private static RoomDao instance;
     private static EntityManagerFactory emf;
 
-    private RoomDao(EntityManagerFactory emf) {
+    private RoomDao(EntityManagerFactory emf)
+    {
         this.emf = emf;
     }
 
-    public static RoomDao getInstance(EntityManagerFactory emf) {
-        if (instance == null) {
+    public static RoomDao getInstance(EntityManagerFactory emf)
+    {
+        if (instance == null)
+        {
             instance = new RoomDao(emf);
         }
         return instance;
     }
 
-    public static RoomDao getInstance() {
+    public static RoomDao getInstance()
+    {
         return instance;
     }
 
 
-    public List<RoomDto> readAllRoomsForHotel(int hotelId) throws DaoException {
+    public List<RoomDto> readAllRoomsForHotel(int hotelId) throws DaoException
+    {
 
-        try (EntityManager em = emf.createEntityManager()) {
+        try (EntityManager em = emf.createEntityManager())
+        {
 
             String jpql = "SELECT r FROM Room r WHERE r.hotel.id=:hotelId ORDER BY id";
             TypedQuery<Room> query = em.createQuery(jpql, Room.class);
@@ -43,12 +50,15 @@ public class RoomDao {
             List<Room> rooms = query.getResultList();
 
             List<RoomDto> roomDtos = new LinkedList<>();
-            for (Room r : rooms) {
+            for (Room r : rooms)
+            {
                 roomDtos.add(new RoomDto(r));
             }
             return roomDtos;
 
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+        {
             throw new DaoException("Error reading all rooms for hotel");
         }
     }

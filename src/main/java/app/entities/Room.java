@@ -9,7 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Room {
+public class Room
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,13 +19,14 @@ public class Room {
     @ManyToOne
     private Hotel hotel;
 
-    @Column(name="room_number")
+    @Column(name = "room_number")
     private String roomNumber;
 
-    @Column(name="price_per_night_dkk")
+    @Column(name = "price_per_night_dkk")
     private Double pricePerNightDkk;
 
-    public Room(String roomNumber, Double pricePerNightDkk) {
+    public Room(String roomNumber, Double pricePerNightDkk)
+    {
         this.roomNumber = roomNumber;
         this.pricePerNightDkk = pricePerNightDkk;
     }

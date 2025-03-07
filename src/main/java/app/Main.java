@@ -18,9 +18,11 @@ import app.daos.PoemDao;
 import app.dtos.PoemDto;
 import app.controllers.PoemController;
 
-public class Main {
+public class Main
+{
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
@@ -50,7 +52,8 @@ public class Main {
 
         // Close EntityManagerFactory when program shuts down
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            if (emf != null && emf.isOpen()) {
+            if (emf != null && emf.isOpen())
+            {
                 emf.close();
                 System.out.println("EntityManagerFactory closed.");
             }

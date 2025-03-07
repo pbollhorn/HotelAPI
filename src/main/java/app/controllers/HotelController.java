@@ -12,12 +12,14 @@ import io.javalin.http.Context;
 
 import java.util.List;
 
-public class HotelController {
+public class HotelController
+{
 
     private static HotelDao hotelDao = HotelDao.getInstance();
     private static RoomDao roomDao = RoomDao.getInstance();
 
-    public static void addRoutes(String resource, Javalin app) {
+    public static void addRoutes(String resource, Javalin app)
+    {
         app.get(resource + "/", ctx -> getAll(ctx));
         app.get(resource + "/{id}", ctx -> getById(ctx));
         app.post(resource + "/", ctx -> create(ctx));
@@ -26,42 +28,58 @@ public class HotelController {
         app.get(resource + "/{id}/room", ctx -> getAllRoomsForHotel(ctx));
     }
 
-    private static void getAllRoomsForHotel(Context ctx) {
+    private static void getAllRoomsForHotel(Context ctx)
+    {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        try {
+        try
+        {
             List<RoomDto> roomDtos = roomDao.readAllRoomsForHotel(id);
             ctx.json(roomDtos);
-        } catch (DaoException e) {
+        }
+        catch (DaoException e)
+        {
             ctx.status(500);
         }
     }
 
-    private static void getAll(Context ctx) {
-        try {
+    private static void getAll(Context ctx)
+    {
+        try
+        {
             List<HotelDto> hotelDtos = hotelDao.readAll();
             ctx.json(hotelDtos);
-        } catch (DaoException e) {
+        }
+        catch (DaoException e)
+        {
             ctx.status(500);
         }
     }
 
     // TODO: Also implement 404 not found status code
-    private static void getById(Context ctx) {
+    private static void getById(Context ctx)
+    {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        try {
+        try
+        {
             HotelDto hotelDto = hotelDao.readById(id);
             ctx.json(hotelDto);
-        } catch (DaoException e) {
+        }
+        catch (DaoException e)
+        {
             ctx.status(500);
         }
     }
 
-    private static void create(Context ctx) {
+    private static void create(Context ctx)
+    {
         HotelDto hotelDto = ctx.bodyAsClass(HotelDto.class);
         System.out.println(hotelDto);
-        try {
+        try
+        {
             hotelDto = hotelDao.create(hotelDto); // ignores id in hotelDto, and puts id in hotelDto
-        } catch (DaoException e) {
+        }
+        catch (DaoException e)
+        {
             ctx.status(500);
             return;
         }
@@ -69,14 +87,16 @@ public class HotelController {
     }
 
 
-    private static void update(Context ctx) {
+    private static void update(Context ctx)
+    {
 //        int id = Integer.parseInt(ctx.pathParam("id"));  // Go by this id
 //        PoemDto poemDto = ctx.bodyAsClass(PoemDto.class);   // Ignore any id in the PoemDto
 //        poemDto = poemDao.update(id, poemDto);
 //        ctx.json(poemDto);
     }
 
-    private static void delete(Context ctx) {
+    private static void delete(Context ctx)
+    {
 //        int id = Integer.parseInt(ctx.pathParam("id"));
 //        poemDao.deleteById(id);
     }
