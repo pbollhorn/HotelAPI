@@ -1,32 +1,20 @@
 package app.controllers;
 
-import app.daos.HotelDao;
-import app.daos.PoemDao;
-import app.daos.RoomDao;
-import app.dtos.HotelDto;
-import app.dtos.PoemDto;
-import app.dtos.RoomDto;
-import app.exceptions.DaoException;
-import io.javalin.Javalin;
+import java.util.List;
+
 import io.javalin.http.Context;
 
-import java.util.List;
+import app.daos.HotelDao;
+import app.daos.RoomDao;
+import app.dtos.HotelDto;
+import app.dtos.RoomDto;
+import app.exceptions.DaoException;
 
 public class HotelController
 {
 
     private static HotelDao hotelDao = HotelDao.getInstance();
     private static RoomDao roomDao = RoomDao.getInstance();
-
-    public static void addRoutes(String resource, Javalin app)
-    {
-        app.get(resource + "/", ctx -> getAll(ctx));
-        app.get(resource + "/{id}", ctx -> getById(ctx));
-        app.post(resource + "/", ctx -> create(ctx));
-        app.put(resource + "/{id}", ctx -> update(ctx));
-        app.delete(resource + "/{id}", ctx -> delete(ctx));
-        app.get(resource + "/{id}/room", ctx -> getAllRoomsForHotel(ctx));
-    }
 
     public static void getAllRoomsForHotel(Context ctx)
     {

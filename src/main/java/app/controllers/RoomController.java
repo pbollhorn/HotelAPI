@@ -10,15 +10,6 @@ import java.util.List;
 public class RoomController
 {
 
-    public static void addRoutes(String resource, Javalin app)
-    {
-        app.get(resource + "/", ctx -> getAll(ctx));
-//        app.get(resource + "/{id}", ctx -> getById(ctx));
-//        app.post(resource + "/", ctx -> create(ctx));
-//        app.put(resource + "/{id}", ctx -> update(ctx));
-//        app.delete(resource + "/{id}", ctx -> delete(ctx));
-    }
-
     private static void getAll(Context ctx)
     {
 

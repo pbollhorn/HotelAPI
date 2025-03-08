@@ -1,34 +1,22 @@
 package app;
 
-import java.io.File;
-import java.io.IOException;
+import jakarta.persistence.EntityManagerFactory;
 
 import app.config.ApplicationConfig;
-import app.controllers.HotelController;
+import app.config.HibernateConfig;
 import app.controllers.Routes;
 import app.daos.HotelDao;
 import app.daos.RoomDao;
 import app.entities.Hotel;
 import app.entities.Room;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.javalin.Javalin;
-import jakarta.persistence.EntityManagerFactory;
-
-import app.config.HibernateConfig;
-import app.daos.PoemDao;
-import app.dtos.PoemDto;
-import app.controllers.PoemController;
 
 public class Main
 {
 
     public static void main(String[] args)
     {
-
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
-        RoomDao roomDao = RoomDao.getInstance(emf);
 
         Hotel h1 = new Hotel("Mågevejens Hotel", "Mågevej 1, 2400 København NV");
         h1.addRoom(new Room("101", 1000.0));
@@ -44,14 +32,6 @@ public class Main
         h2.addRoom(new Room("1C", 600.0));
         h2.addRoom(new Room("2A", 1800.0));
         hotelDao.create(h2);
-
-//        // Initializing Javalin and Jetty webserver
-//        Javalin app = Javalin.create(config -> {
-//            config.router.contextPath = "/api";
-//        }).start(7070);
-//
-//        HotelController.addRoutes("hotel", app);
-
 
 
         ApplicationConfig

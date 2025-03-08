@@ -1,15 +1,15 @@
 package app.daos;
 
-import app.exceptions.DaoException;
+import java.util.LinkedList;
+import java.util.List;
+
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
 import app.entities.Hotel;
 import app.dtos.HotelDto;
-import jakarta.persistence.TypedQuery;
-
-import java.util.LinkedList;
-import java.util.List;
+import app.exceptions.DaoException;
 
 public class HotelDao
 {
