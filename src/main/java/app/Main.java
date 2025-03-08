@@ -62,7 +62,6 @@ public class Main
                 .startServer(7070);
 
 
-
         // Close EntityManagerFactory when program shuts down
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             if (emf != null && emf.isOpen())
@@ -70,7 +69,6 @@ public class Main
                 emf.close();
                 System.out.println("EntityManagerFactory closed.");
             }
-//            app.stop(); // TODO: Necessary????????
         }));
 
     }

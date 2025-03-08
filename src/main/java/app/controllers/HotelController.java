@@ -28,7 +28,7 @@ public class HotelController
         app.get(resource + "/{id}/room", ctx -> getAllRoomsForHotel(ctx));
     }
 
-    private static void getAllRoomsForHotel(Context ctx)
+    public static void getAllRoomsForHotel(Context ctx)
     {
         int id = Integer.parseInt(ctx.pathParam("id"));
         try
@@ -42,7 +42,7 @@ public class HotelController
         }
     }
 
-    private static void getAll(Context ctx)
+    public static void getAll(Context ctx)
     {
         try
         {
@@ -56,7 +56,7 @@ public class HotelController
     }
 
     // TODO: Also implement 404 not found status code
-    private static void getById(Context ctx)
+    public static void getById(Context ctx)
     {
         int id = Integer.parseInt(ctx.pathParam("id"));
         try
@@ -70,7 +70,7 @@ public class HotelController
         }
     }
 
-    private static void create(Context ctx)
+    public static void create(Context ctx)
     {
         HotelDto hotelDto = ctx.bodyAsClass(HotelDto.class);
         System.out.println(hotelDto);
@@ -87,7 +87,7 @@ public class HotelController
     }
 
 
-    private static void update(Context ctx)
+    public static void update(Context ctx)
     {
 //        int id = Integer.parseInt(ctx.pathParam("id"));  // Go by this id
 //        PoemDto poemDto = ctx.bodyAsClass(PoemDto.class);   // Ignore any id in the PoemDto
@@ -95,7 +95,7 @@ public class HotelController
 //        ctx.json(poemDto);
     }
 
-    private static void delete(Context ctx)
+    public static void delete(Context ctx)
     {
 //        int id = Integer.parseInt(ctx.pathParam("id"));
 //        poemDao.deleteById(id);
