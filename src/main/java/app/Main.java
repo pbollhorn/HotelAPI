@@ -3,7 +3,9 @@ package app;
 import java.io.File;
 import java.io.IOException;
 
+import app.config.ApplicationConfig;
 import app.controllers.HotelController;
+import app.controllers.Routes;
 import app.daos.HotelDao;
 import app.daos.RoomDao;
 import app.entities.Hotel;
@@ -43,12 +45,23 @@ public class Main
         h2.addRoom(new Room("2A", 1800.0));
         hotelDao.create(h2);
 
-        // Initializing Javalin and Jetty webserver
-        Javalin app = Javalin.create(config -> {
-            config.router.contextPath = "/api";
-        }).start(7070);
+//        // Initializing Javalin and Jetty webserver
+//        Javalin app = Javalin.create(config -> {
+//            config.router.contextPath = "/api";
+//        }).start(7070);
+//
+//        HotelController.addRoutes("hotel", app);
 
-        HotelController.addRoutes("hotel", app);
+
+
+        ApplicationConfig
+                .getInstance()
+                .initiateServer()
+                .setRoute(Routes.getRoutes())
+                .handleException()
+                .startServer(7070);
+
+
 
         // Close EntityManagerFactory when program shuts down
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -57,7 +70,7 @@ public class Main
                 emf.close();
                 System.out.println("EntityManagerFactory closed.");
             }
-            app.stop(); // TODO: Necessary????????
+//            app.stop(); // TODO: Necessary????????
         }));
 
     }
