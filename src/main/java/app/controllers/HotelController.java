@@ -81,8 +81,8 @@ public class HotelController
         int id = Integer.parseInt(ctx.pathParam("id"));
         try
         {
-            hotelDao.delete(id);
-            ctx.status(204);
+            HotelDto hotelDto = hotelDao.delete(id);
+            ctx.json(hotelDto);
         }
         catch (DaoException e)
         {

@@ -123,7 +123,7 @@ public class HotelDao
         }
     }
 
-    public void delete(int id) throws DaoException
+    public HotelDto delete(int id) throws DaoException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -131,6 +131,8 @@ public class HotelDao
             Hotel hotel = em.find(Hotel.class, id);
             em.remove(hotel);
             em.getTransaction().commit();
+
+            return new HotelDto(hotel);
         }
         catch (RuntimeException e)
         {
