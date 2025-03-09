@@ -22,4 +22,4 @@ Content-Type: "application/json"
 
 
 ###
-DELETE localhost:7070/api/poem/1
+DELETE localhost:7070/api/hotel/1

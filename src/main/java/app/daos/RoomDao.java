@@ -37,7 +37,7 @@ public class RoomDao
     }
 
 
-    public List<RoomDto> readAllRoomsForHotel(int hotelId) throws DaoException
+    public List<RoomDto> getAllByHotelId(int hotelId) throws DaoException
     {
 
         try (EntityManager em = emf.createEntityManager())

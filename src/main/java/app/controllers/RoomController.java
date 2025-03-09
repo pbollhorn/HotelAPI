@@ -18,7 +18,7 @@ public class RoomController
         int id = Integer.parseInt(ctx.pathParam("id"));
         try
         {
-            List<RoomDto> roomDtos = roomDao.readAllRoomsForHotel(id);
+            List<RoomDto> roomDtos = roomDao.getAllByHotelId(id);
             ctx.json(roomDtos);
         }
         catch (DaoException e)

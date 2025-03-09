@@ -17,7 +17,7 @@ public class HotelController
     {
         try
         {
-            List<HotelDto> hotelDtos = hotelDao.readAll();
+            List<HotelDto> hotelDtos = hotelDao.getAll();
             ctx.json(hotelDtos);
         }
         catch (DaoException e)
@@ -27,12 +27,12 @@ public class HotelController
     }
 
     // TODO: Also implement 404 not found status code
-    public static void getById(Context ctx)
+    public static void get(Context ctx)
     {
         int id = Integer.parseInt(ctx.pathParam("id"));
         try
         {
-            HotelDto hotelDto = hotelDao.readById(id);
+            HotelDto hotelDto = hotelDao.get(id);
             ctx.json(hotelDto);
         }
         catch (DaoException e)
@@ -68,8 +68,16 @@ public class HotelController
 
     public static void delete(Context ctx)
     {
-//        int id = Integer.parseInt(ctx.pathParam("id"));
-//        poemDao.deleteById(id);
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        try
+        {
+            hotelDao.delete(id);
+            ctx.status(204);
+        }
+        catch (DaoException e)
+        {
+            ctx.status(500);
+        }
     }
 
 

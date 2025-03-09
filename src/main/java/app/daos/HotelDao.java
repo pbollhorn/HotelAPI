@@ -36,34 +36,8 @@ public class HotelDao
         return instance;
     }
 
-    public Hotel create(Hotel hotel)
-    {
-        try (EntityManager em = emf.createEntityManager())
-        {
-            em.getTransaction().begin();
-            em.persist(hotel);
-            em.getTransaction().commit();
-            return hotel;
-        }
-    }
 
-    public HotelDto create(HotelDto hotelDto) throws DaoException
-    {
-        try (EntityManager em = emf.createEntityManager())
-        {
-            Hotel hotel = new Hotel(hotelDto);
-            em.getTransaction().begin();
-            em.persist(hotel);
-            em.getTransaction().commit();
-            return new HotelDto(hotel);
-        }
-        catch (RuntimeException e)
-        {
-            throw new DaoException("Error creating hotel");
-        }
-    }
-
-    public List<HotelDto> readAll() throws DaoException
+    public List<HotelDto> getAll() throws DaoException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -87,7 +61,8 @@ public class HotelDao
 
     }
 
-    public HotelDto readById(int id) throws DaoException
+
+    public HotelDto get(int id) throws DaoException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -99,5 +74,50 @@ public class HotelDao
             throw new DaoException("error in readyById");
         }
     }
+
+
+    public Hotel create(Hotel hotel)
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            em.persist(hotel);
+            em.getTransaction().commit();
+            return hotel;
+        }
+    }
+
+
+    public HotelDto create(HotelDto hotelDto) throws DaoException
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            Hotel hotel = new Hotel(hotelDto);
+            em.getTransaction().begin();
+            em.persist(hotel);
+            em.getTransaction().commit();
+            return new HotelDto(hotel);
+        }
+        catch (RuntimeException e)
+        {
+            throw new DaoException("Error creating hotel");
+        }
+    }
+
+    public void delete(int id) throws DaoException
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            em.getTransaction().begin();
+            Hotel hotel = em.find(Hotel.class, id);
+            em.remove(hotel);
+            em.getTransaction().commit();
+        }
+        catch (RuntimeException e)
+        {
+            throw new DaoException("error in delete");
+        }
+    }
+
 
 }

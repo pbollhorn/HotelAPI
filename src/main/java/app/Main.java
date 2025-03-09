@@ -34,14 +34,12 @@ public class Main
         h2.addRoom(new Room("2A", 1800.0));
         hotelDao.create(h2);
 
-
         ApplicationConfig
                 .getInstance()
                 .initiateServer()
                 .setRoute(Routes.getRoutes())
                 .handleException()
                 .startServer(7070);
-
 
         // Close EntityManagerFactory when program shuts down
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

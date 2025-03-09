@@ -17,7 +17,7 @@ public class Routes
                 });
 
                 get("/{id}", ctx -> {
-                    HotelController.getById(ctx);
+                    HotelController.get(ctx);
                 });
 
                 // New route for getting rooms of a specific hotel by ID
