@@ -1,6 +1,12 @@
 GET localhost:7070/api/hotel
 
 ###
+GET localhost:7070/api/hotel/1
+
+###
+GET localhost:7070/api/hotel/1/room
+
+###
 POST localhost:7070/api/hotel
 Content-Type: "application/json"
 
@@ -10,14 +16,12 @@ Content-Type: "application/json"
 }
 
 ###
-PUT localhost:7070/api/poem/3
+PUT localhost:7070/api/hotel/1
 Content-Type: "application/json"
 
 {
-    "name": "The Crescent-Moon, The Star Of Love",
-    "author": "William Wordsworth",
-    "year": 1842,
-    "text": "The Crescent-moon, the Star of Love,\nGlories of evening, as ye there are seen\nWith but a span of sky between\nSpeak one of you, my doubts remove,\nWhich is the attendant Page and which the Queen?"
+    "name": "New Hotel Name",
+    "address": "New Hotel Address"
 }
 
 

@@ -60,10 +60,20 @@ public class HotelController
 
     public static void update(Context ctx)
     {
-//        int id = Integer.parseInt(ctx.pathParam("id"));  // Go by this id
-//        PoemDto poemDto = ctx.bodyAsClass(PoemDto.class);   // Ignore any id in the PoemDto
-//        poemDto = poemDao.update(id, poemDto);
-//        ctx.json(poemDto);
+        int id = Integer.parseInt(ctx.pathParam("id"));  // Go by this id
+        HotelDto hotelDto = ctx.bodyAsClass(HotelDto.class);   // Ignore any id in the HotelDto
+
+        try
+        {
+            hotelDto = hotelDao.update(id, hotelDto);
+        }
+        catch (DaoException e)
+        {
+            ctx.status(500);
+            return;
+        }
+
+        ctx.json(hotelDto);
     }
 
     public static void delete(Context ctx)

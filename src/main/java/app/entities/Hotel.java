@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import app.dtos.HotelDto;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 @Entity
 public class Hotel
 {
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -104,6 +104,25 @@ public class HotelDao
         }
     }
 
+    public HotelDto update(int id, HotelDto hotelDto) throws DaoException
+    {
+        try (EntityManager em = emf.createEntityManager())
+        {
+            Hotel hotel = new Hotel(hotelDto);
+            hotel.setId(id);
+
+            em.getTransaction().begin();
+            hotel = em.merge(hotel);
+            em.getTransaction().commit();
+
+            return new HotelDto(hotel);
+        }
+        catch (RuntimeException e)
+        {
+            throw new DaoException("Error creating hotel");
+        }
+    }
+
     public void delete(int id) throws DaoException
     {
         try (EntityManager em = emf.createEntityManager())
