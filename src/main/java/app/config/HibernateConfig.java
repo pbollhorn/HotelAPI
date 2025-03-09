@@ -2,15 +2,14 @@ package app.config;
 
 import java.util.Properties;
 
-import app.entities.Hotel;
-import app.entities.Room;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import app.entities.Poem;
+import app.entities.Hotel;
+import app.entities.Room;
 import app.utils.Utils;
 
 public class HibernateConfig

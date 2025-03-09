@@ -22,7 +22,7 @@ public class Routes
 
                 // New route for getting rooms of a specific hotel by ID
                 get("/{id}/room", ctx -> {
-                    HotelController.getAllRoomsForHotel(ctx);
+                    RoomController.getAll(ctx);
                 });
 
                 post("/", ctx -> {

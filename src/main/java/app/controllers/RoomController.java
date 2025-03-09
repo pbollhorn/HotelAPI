@@ -1,18 +1,30 @@
 package app.controllers;
 
-import app.dtos.HotelDto;
-import app.exceptions.DaoException;
-import io.javalin.Javalin;
+import java.util.List;
+
 import io.javalin.http.Context;
 
-import java.util.List;
+import app.daos.RoomDao;
+import app.dtos.RoomDto;
+import app.exceptions.DaoException;
 
 public class RoomController
 {
 
-    private static void getAll(Context ctx)
-    {
+    private static RoomDao roomDao = RoomDao.getInstance();
 
+    public static void getAll(Context ctx)
+    {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        try
+        {
+            List<RoomDto> roomDtos = roomDao.readAllRoomsForHotel(id);
+            ctx.json(roomDtos);
+        }
+        catch (DaoException e)
+        {
+            ctx.status(500);
+        }
     }
 
 //    private static void getById(Context ctx) {

@@ -1,10 +1,10 @@
 package app.utils;
 
-import app.exceptions.ApiException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import app.exceptions.ApiException;
 
 public class Utils
 {
