@@ -56,6 +56,13 @@ public class ApplicationConfig
 
     public ApplicationConfig handleException()
     {
+        // TODO: Should I have two of these or put them both inside the last one?
+        app.exception(IllegalStateException.class, (e, ctx) -> {
+            ObjectNode node = objectMapper.createObjectNode();
+            node.put("msg", e.getMessage());
+            ctx.status(400);
+            ctx.json(node);
+        });
         app.exception(Exception.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();
             node.put("msg", e.getMessage());

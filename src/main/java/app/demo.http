@@ -16,6 +16,15 @@ Content-Type: "application/json"
 }
 
 ###
+POST localhost:7070/api/hotel
+Content-Type: "application/json"
+
+{
+    "badname": "Bad Hotel",
+    "badaddress": "Bad Address"
+}
+
+###
 PUT localhost:7070/api/hotel/1
 Content-Type: "application/json"
 

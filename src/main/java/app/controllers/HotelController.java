@@ -13,17 +13,23 @@ public class HotelController
 
     private static HotelDao hotelDao = HotelDao.getInstance();
 
-    public static void getAll(Context ctx)
+//    public static void getAll(Context ctx)
+//    {
+//        try
+//        {
+//            List<HotelDto> hotelDtos = hotelDao.getAll();
+//            ctx.json(hotelDtos);
+//        }
+//        catch (DaoException e)
+//        {
+//            ctx.status(500);
+//        }
+//    }
+
+    public static void getAll(Context ctx) throws Exception
     {
-        try
-        {
-            List<HotelDto> hotelDtos = hotelDao.getAll();
-            ctx.json(hotelDtos);
-        }
-        catch (DaoException e)
-        {
-            ctx.status(500);
-        }
+        List<HotelDto> hotelDtos = hotelDao.getAll();
+        ctx.json(hotelDtos);
     }
 
     // TODO: Also implement 404 not found status code
@@ -41,19 +47,10 @@ public class HotelController
         }
     }
 
-    public static void create(Context ctx)
+    public static void create(Context ctx) throws Exception
     {
         HotelDto hotelDto = ctx.bodyAsClass(HotelDto.class);
-        System.out.println(hotelDto);
-        try
-        {
-            hotelDto = hotelDao.create(hotelDto); // ignores id in hotelDto, and puts id in hotelDto
-        }
-        catch (DaoException e)
-        {
-            ctx.status(500);
-            return;
-        }
+        hotelDto = hotelDao.create(hotelDto); // ignores id in hotelDto, and puts id in hotelDto
         ctx.json(hotelDto);
     }
 
