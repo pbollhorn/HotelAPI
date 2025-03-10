@@ -28,14 +28,11 @@ class HotelDaoTest
     {
         try (EntityManager em = emf.createEntityManager())
         {
-            // Delete all hotels in database. This cascades to rooms and also deletes them.
-            for (HotelDto h : hotelDao.getAll())
-            {
-                hotelDao.delete(h.id());
-            }
 
             // Reset id's to start with 1
             em.getTransaction().begin();
+            em.createNativeQuery("DELETE FROM Room").executeUpdate();
+            em.createNativeQuery("DELETE FROM Hotel").executeUpdate();
             em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1").executeUpdate();
             em.createNativeQuery("ALTER SEQUENCE room_id_seq RESTART WITH 1").executeUpdate();
             em.getTransaction().commit();

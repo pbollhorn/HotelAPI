@@ -23,7 +23,7 @@ public class Hotel
     private String name;
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="hotel", cascade = CascadeType.ALL)
     Set<Room> rooms = new HashSet<>();
 
     public void addRoom(Room room)
