@@ -20,6 +20,7 @@ class HotelDaoTest
 {
     private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
     private static final HotelDao hotelDao = HotelDao.getInstance(emf);
+    private static final RoomDao roomDao = RoomDao.getInstance(emf);
     private static HotelDto h1;
     private static HotelDto h2;
 
@@ -29,7 +30,7 @@ class HotelDaoTest
         try (EntityManager em = emf.createEntityManager())
         {
 
-            // Reset id's to start with 1
+            // Delete everything from tables and reset id's to start with 1
             em.getTransaction().begin();
             em.createNativeQuery("DELETE FROM Room").executeUpdate();
             em.createNativeQuery("DELETE FROM Hotel").executeUpdate();
@@ -99,6 +100,9 @@ class HotelDaoTest
         assertEquals(1, newH1.id());
         assertEquals("New Hotel 1", newH1.name());
         assertEquals("New Address 1", newH1.address());
+
+        // Check that the hotel is still associated with the same number of rooms
+        assertEquals(5, roomDao.getAllByHotelId(1).size());
     }
 
     @Test
