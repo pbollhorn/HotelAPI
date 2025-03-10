@@ -14,12 +14,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <javalin.version>6.4.0</javalin.version>
+        <jackson.version>2.17.2</jackson.version>
+        <logback-classic.version>1.5.16</logback-classic.version>
+        <slf4j.version>2.0.16</slf4j.version>
         <lombok.version>1.18.36</lombok.version>
         <postgres.version>42.7.5</postgres.version>
-        <hibernate-version>6.6.6.Final</hibernate-version>
+        <hibernate.version>6.6.6.Final</hibernate.version>
         <junit.version>5.11.4</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
         <rest-assured.version>5.5.0</rest-assured.version>
+        <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
 
     <dependencies>
@@ -27,11 +31,30 @@
         <!--  Javalin    -->
         <dependency>
             <groupId>io.javalin</groupId>
-            <artifactId>javalin-bundle</artifactId>
+            <artifactId>javalin</artifactId>
             <version>${javalin.version}</version>
         </dependency>
 
-        <!--  LOMBOK    -->
+        <!--  Jackson    -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!--  Logging   -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!--  Lombok    -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -48,10 +71,10 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate-version}</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
-        <!--  TESTING      -->
+        <!--  Testing      -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -73,19 +96,42 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>${hamcrest.version}</version> <!-- Use the latest version available -->
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version> <!-- Use the latest version available -->
+            <version>${rest-assured.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-path</artifactId>
             <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>${testcontainers.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
 
