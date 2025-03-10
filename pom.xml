@@ -21,7 +21,7 @@
         <postgres.version>42.7.5</postgres.version>
         <hibernate.version>6.6.6.Final</hibernate.version>
         <junit.version>5.11.4</junit.version>
-        <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest.version>3.0</hamcrest.version>
         <rest-assured.version>5.5.0</rest-assured.version>
         <testcontainers.version>1.20.4</testcontainers.version>
     </properties>
