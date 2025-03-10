@@ -2,6 +2,8 @@ package app.controllers;
 
 import java.util.List;
 
+import app.exceptions.ApiException;
+import app.exceptions.IdNotFoundException;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 
@@ -17,22 +19,34 @@ public class HotelController
     public static void getAll(Context ctx) throws Exception
     {
         List<HotelDto> hotelDtos = hotelDao.getAll();
+
         ctx.json(hotelDtos);
     }
 
-    // TODO: Also implement 404 not found status code
-    public static void get(Context ctx)
+    public static void get(Context ctx) throws Exception
     {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int id;
+        HotelDto hotelDto;
+
         try
         {
-            HotelDto hotelDto = hotelDao.get(id);
-            ctx.json(hotelDto);
+            id = Integer.parseInt(ctx.pathParam("id"));
         }
-        catch (DaoException e)
+        catch (Exception e)
         {
-            ctx.status(500);
+            throw new ApiException(400, "Bad id, not a proper id");
         }
+
+        try
+        {
+            hotelDto = hotelDao.get(id);
+        }
+        catch (IdNotFoundException e)
+        {
+            throw new ApiException(404, e.getMessage());
+        }
+
+        ctx.json(hotelDto);
     }
 
     public static void create(Context ctx) throws Exception

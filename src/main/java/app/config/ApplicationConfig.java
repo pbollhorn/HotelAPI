@@ -1,5 +1,7 @@
 package app.config;
 
+import app.exceptions.ApiException;
+import app.exceptions.IdNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
@@ -57,16 +59,17 @@ public class ApplicationConfig
 
     public ApplicationConfig handleException()
     {
-        // TODO: Should I have two of these or put them both inside the last one? UnrecognizedPropertyException
-        app.exception(BadRequestResponse.class, (e, ctx) -> {
+        app.exception(ApiException.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();
+            node.put("code", e.getCode());
             node.put("msg", e.getMessage());
-            ctx.status(400);
+            ctx.status(e.getCode());
             ctx.json(node);
         });
         app.exception(Exception.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();
-            node.put("msg", e.getMessage());
+            node.put("code", "500");
+            node.put("msg", "Internal server error");
             ctx.status(500);
             ctx.json(node);
         });

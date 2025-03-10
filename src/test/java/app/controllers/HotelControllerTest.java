@@ -1,6 +1,8 @@
 package app.controllers;
 
+import app.dtos.HotelDto;
 import io.restassured.RestAssured;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
@@ -16,28 +18,14 @@ import app.entities.Room;
 
 public class HotelControllerTest
 {
+    private static final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
+    private static final HotelDao hotelDao = HotelDao.getInstance(emf);
+    private static HotelDto h1;
+    private static HotelDto h2;
+
     @BeforeAll
     static void setupAll()
     {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-        HotelDao hotelDao = HotelDao.getInstance(emf);
-        RoomDao roomDao = RoomDao.getInstance(emf);
-
-        Hotel h1 = new Hotel("Mågevejens Hotel", "Mågevej 1, 2400 København NV");
-        h1.addRoom(new Room("101", 1000.0));
-        h1.addRoom(new Room("102", 1000.0));
-        h1.addRoom(new Room("103", 1000.0));
-        h1.addRoom(new Room("201", 1500.0));
-        h1.addRoom(new Room("202", 1500.0));
-        hotelDao.create(h1);
-
-        Hotel h2 = new Hotel("Byens Hotel", "Bjergbygade 1, 4200 Slagelse");
-        h2.addRoom(new Room("1A", 600.0));
-        h2.addRoom(new Room("1B", 600.0));
-        h2.addRoom(new Room("1C", 600.0));
-        h2.addRoom(new Room("2A", 1800.0));
-        hotelDao.create(h2);
-
         ApplicationConfig
                 .getInstance()
                 .initiateServer()
@@ -51,13 +39,39 @@ public class HotelControllerTest
     @BeforeEach
     void setUp()
     {
+        try (EntityManager em = emf.createEntityManager())
+        {
 
+            // Delete everything from tables and reset id's to start with 1
+            em.getTransaction().begin();
+            em.createNativeQuery("DELETE FROM Room").executeUpdate();
+            em.createNativeQuery("DELETE FROM Hotel").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE room_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1").executeUpdate();
+            em.getTransaction().commit();
+
+            // Populate database with the two test hotels, including their rooms
+            HotelDto[] hotelDtos = app.populators.HotelPopulator.populate(hotelDao);
+            h1 = hotelDtos[0];
+            h2 = hotelDtos[1];
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    @AfterEach
-    void tearDown()
+
+    @AfterAll
+    static void tearDown()
     {
+        if (emf != null && emf.isOpen())
+        {
+            emf.close();
+            System.out.println("EntityManagerFactory closed.");
+        }
     }
+
 
     @Test
     void get()
@@ -67,7 +81,23 @@ public class HotelControllerTest
                 .get("/hotel/1")
                 .then()
                 .statusCode(200)
-                .body("id", equalTo(1));
+                .body("id", equalTo(1))
+                .body("name", equalTo("Hotel 1"))
+                .body("address", equalTo("Address 1"));
+
+        // Negative test: Test with id that does not exist
+        given()
+                .when()
+                .get("/hotel/0")
+                .then()
+                .statusCode(404);
+
+        // Negative test: Test with id that is not a number
+        given()
+                .when()
+                .get("/hotel/notnumber")
+                .then()
+                .statusCode(400);
     }
 
     @Test

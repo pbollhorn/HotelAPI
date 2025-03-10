@@ -3,6 +3,8 @@ package app.daos;
 import java.util.LinkedList;
 import java.util.List;
 
+import app.exceptions.IdNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -62,16 +64,16 @@ public class HotelDao
     }
 
 
-    public HotelDto get(int id) throws DaoException
+    public HotelDto get(int id) throws RuntimeException, IdNotFoundException
     {
         try (EntityManager em = emf.createEntityManager())
         {
             Hotel hotel = em.find(Hotel.class, id);
+            if (hotel == null)
+            {
+                throw new IdNotFoundException("No hotel with id=" + id);
+            }
             return new HotelDto(hotel);
-        }
-        catch (RuntimeException e)
-        {
-            throw new DaoException("error in readyById");
         }
     }
 

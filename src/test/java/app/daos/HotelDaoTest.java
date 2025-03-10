@@ -34,8 +34,8 @@ class HotelDaoTest
             em.getTransaction().begin();
             em.createNativeQuery("DELETE FROM Room").executeUpdate();
             em.createNativeQuery("DELETE FROM Hotel").executeUpdate();
-            em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1").executeUpdate();
             em.createNativeQuery("ALTER SEQUENCE room_id_seq RESTART WITH 1").executeUpdate();
+            em.createNativeQuery("ALTER SEQUENCE hotel_id_seq RESTART WITH 1").executeUpdate();
             em.getTransaction().commit();
 
             // Populate database with the two test hotels, including their rooms
@@ -60,7 +60,7 @@ class HotelDaoTest
     }
 
     @Test
-    void getAll() throws DaoException
+    void getAll() throws Exception
     {
         List<HotelDto> hotelDtos = hotelDao.getAll();
         assertEquals(2, hotelDtos.size());
@@ -69,7 +69,7 @@ class HotelDaoTest
     }
 
     @Test
-    void get() throws DaoException
+    void get() throws Exception
     {
         HotelDto h = hotelDao.get(1);
         assertNotNull(h);
