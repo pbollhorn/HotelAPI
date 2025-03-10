@@ -70,4 +70,24 @@ public class HotelControllerTest
                 .body("id", equalTo(1));
     }
 
+    @Test
+    void getAll()
+    {
+    }
+
+
+    @Test
+    void create()
+    {
+    }
+
+    @Test
+    void update()
+    {
+    }
+
+    @Test
+    void delete()
+    {
+    }
 }
