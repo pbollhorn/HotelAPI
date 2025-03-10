@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.config.JavalinConfig;
+import io.javalin.http.BadRequestResponse;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 
@@ -56,8 +57,8 @@ public class ApplicationConfig
 
     public ApplicationConfig handleException()
     {
-        // TODO: Should I have two of these or put them both inside the last one?
-        app.exception(IllegalStateException.class, (e, ctx) -> {
+        // TODO: Should I have two of these or put them both inside the last one? UnrecognizedPropertyException
+        app.exception(BadRequestResponse.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();
             node.put("msg", e.getMessage());
             ctx.status(400);
