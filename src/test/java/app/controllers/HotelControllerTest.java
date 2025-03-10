@@ -1,10 +1,5 @@
 package app.controllers;
 
-import app.config.HibernateConfig;
-import app.daos.HotelDao;
-import app.daos.RoomDao;
-import app.entities.Hotel;
-import app.entities.Room;
 import io.restassured.RestAssured;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -13,6 +8,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import app.config.ApplicationConfig;
+import app.config.HibernateConfig;
+import app.daos.HotelDao;
+import app.daos.RoomDao;
+import app.entities.Hotel;
+import app.entities.Room;
 
 public class HotelControllerTest
 {
@@ -60,8 +60,7 @@ public class HotelControllerTest
     }
 
     @Test
-    @DisplayName("Test getting hotel by id")
-    void hotelByIdTest()
+    void get()
     {
         given()
                 .when()
