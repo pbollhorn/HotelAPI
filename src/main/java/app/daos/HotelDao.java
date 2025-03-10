@@ -75,15 +75,15 @@ public class HotelDao
         }
     }
 
-
-    public Hotel create(Hotel hotel)
+    // This method takes a Hotel entity as input, and is only used to populate database in the beginning
+    public HotelDto create(Hotel hotel)
     {
         try (EntityManager em = emf.createEntityManager())
         {
             em.getTransaction().begin();
             em.persist(hotel);
             em.getTransaction().commit();
-            return hotel;
+            return new HotelDto(hotel);
         }
     }
 
