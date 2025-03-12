@@ -74,6 +74,17 @@ public class HotelControllerTest
 
 
     @Test
+    void getAll()
+    {
+        given()
+                .when()
+                .get("/hotel")
+                .then()
+                .statusCode(200)
+                .body("size()", equalTo(2));
+    }
+
+    @Test
     void get()
     {
         given()
@@ -100,20 +111,11 @@ public class HotelControllerTest
                 .statusCode(400);
     }
 
-    @Test
-    void getAll()
-    {
-        given()
-                .when()
-                .get("/hotel")
-                .then()
-                .statusCode(200);
-    }
-
 
     @Test
     void create()
     {
+
     }
 
     @Test
@@ -124,5 +126,49 @@ public class HotelControllerTest
     @Test
     void delete()
     {
+        given()
+                .when()
+                .delete("/hotel/1")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(1))
+                .body("name", equalTo("Hotel 1"))
+                .body("address", equalTo("Address 1"));
+
+        // Negative test: Try to delete hotel 1 again
+        given()
+                .when()
+                .delete("/hotel/1")
+                .then()
+                .statusCode(404)
+                .body("code", equalTo(404));
+
+        // Negative tests: Try to delete some hotels that have never existed
+        given()
+                .when()
+                .delete("/hotel/0")
+                .then()
+                .statusCode(404)
+                .body("code", equalTo(404));
+        given()
+                .when()
+                .delete("/hotel/-1")
+                .then()
+                .statusCode(404)
+                .body("code", equalTo(404));
+        given()
+                .when()
+                .delete("/hotel/17")
+                .then()
+                .statusCode(404)
+                .body("code", equalTo(404));
+
+        // Negative test: Try to delete hotel with id that is not a number
+        given()
+                .when()
+                .delete("/hotel/notnumber")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
     }
 }
