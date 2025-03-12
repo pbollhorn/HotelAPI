@@ -73,7 +73,7 @@ public class HotelDao
     }
 
     // This method takes a Hotel entity as input, and is only used to populate database in the beginning
-    public HotelDto create(Hotel hotel) throws DaoException
+    public HotelDto createFromEntity(Hotel hotel) throws DaoException
     {
         try (EntityManager em = emf.createEntityManager())
         {

@@ -2,6 +2,7 @@ package app.daos;
 
 import java.util.List;
 
+import app.exceptions.IdNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -80,20 +81,28 @@ class HotelDaoTest
         // Another way of doing the above
         assertThat(h, samePropertyValuesAs(h1));
 
+        // Negative tests
+        assertThrows(IdNotFoundException.class, () -> hotelDao.get(0));
+        assertThrows(IdNotFoundException.class, () -> hotelDao.get(-1));
+        assertThrows(IdNotFoundException.class, () -> hotelDao.get(17));
+
     }
 
     @Test
-    void create() throws DaoException
+    void create() throws Exception
     {
         HotelDto h = hotelDao.create(new HotelDto(null, "Hotel 3", "Address 3"));
         assertEquals(3, h.id());
         assertEquals("Hotel 3", h.name());
         assertEquals("Address 3", h.address());
+
+        // Negative tests
+        assertThrows(DaoException.class, () -> hotelDao.create(null));
     }
 
 
     @Test
-    void update() throws DaoException
+    void update() throws Exception
     {
         HotelDto newH1 = new HotelDto(null, "New Hotel 1", "New Address 1");
         newH1 = hotelDao.update(1, newH1);
@@ -106,7 +115,7 @@ class HotelDaoTest
     }
 
     @Test
-    void delete() throws DaoException
+    void delete() throws Exception
     {
         HotelDto h = hotelDao.delete(1);
         assertThat(h, samePropertyValuesAs(h1));

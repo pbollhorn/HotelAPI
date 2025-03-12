@@ -4,12 +4,10 @@ import java.util.List;
 
 import app.exceptions.ApiException;
 import app.exceptions.IdNotFoundException;
-import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 
 import app.daos.HotelDao;
 import app.dtos.HotelDto;
-import app.exceptions.DaoException;
 
 public class HotelController
 {
