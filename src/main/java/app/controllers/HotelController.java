@@ -19,7 +19,6 @@ public class HotelController
     public static void getAll(Context ctx) throws Exception
     {
         List<HotelDto> hotelDtos = hotelDao.getAll();
-
         ctx.json(hotelDtos);
     }
 
@@ -32,9 +31,9 @@ public class HotelController
         {
             id = Integer.parseInt(ctx.pathParam("id"));
         }
-        catch (Exception e)
+        catch (RuntimeException e)
         {
-            throw new ApiException(400, "Bad id, not a proper id");
+            throw new ApiException(400, "Bad Request: Malformed id");
         }
 
         try
@@ -51,15 +50,15 @@ public class HotelController
 
     public static void create(Context ctx) throws Exception
     {
-        HotelDto hotelDto = null;
+        HotelDto hotelDto;
 
         try
         {
             hotelDto = ctx.bodyAsClass(HotelDto.class);
         }
-        catch (Exception e)
+        catch (RuntimeException e)
         {
-            throw new BadRequestResponse("Invalid json");
+            throw new ApiException(400, "Bad Request: Malformed json");
         }
 
         hotelDto = hotelDao.create(hotelDto); // ignores id in hotelDto, and puts id in hotelDto
@@ -67,36 +66,57 @@ public class HotelController
     }
 
 
-    public static void update(Context ctx)
+    public static void update(Context ctx) throws Exception
     {
-        int id = Integer.parseInt(ctx.pathParam("id"));  // Go by this id
-        HotelDto hotelDto = ctx.bodyAsClass(HotelDto.class);   // Ignore any id in the HotelDto
+        int id;
+        HotelDto hotelDto;
+
+        try
+        {
+            id = Integer.parseInt(ctx.pathParam("id")); // Use this id, and ignore id in the HotelDto
+            hotelDto = ctx.bodyAsClass(HotelDto.class);
+        }
+        catch (RuntimeException e)
+        {
+            throw new ApiException(400, "Bad Request: Malformed id or json");
+        }
 
         try
         {
             hotelDto = hotelDao.update(id, hotelDto);
         }
-        catch (DaoException e)
+        catch (IdNotFoundException e)
         {
-            ctx.status(500);
-            return;
+            throw new ApiException(404, e.getMessage());
         }
 
         ctx.json(hotelDto);
     }
 
-    public static void delete(Context ctx)
+    public static void delete(Context ctx) throws Exception
     {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int id;
+        HotelDto hotelDto;
+
         try
         {
-            HotelDto hotelDto = hotelDao.delete(id);
-            ctx.json(hotelDto);
+            id = Integer.parseInt(ctx.pathParam("id"));
         }
-        catch (DaoException e)
+        catch (Exception e)
         {
-            ctx.status(500);
+            throw new ApiException(400, "Bad Request: Malformed id");
         }
+
+        try
+        {
+            hotelDto = hotelDao.delete(id);
+        }
+        catch (IdNotFoundException e)
+        {
+            throw new ApiException(404, e.getMessage());
+        }
+
+        ctx.json(hotelDto);
     }
 
 

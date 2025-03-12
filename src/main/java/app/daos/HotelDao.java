@@ -1,10 +1,7 @@
 package app.daos;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import app.exceptions.IdNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -12,6 +9,7 @@ import jakarta.persistence.EntityManagerFactory;
 import app.entities.Hotel;
 import app.dtos.HotelDto;
 import app.exceptions.DaoException;
+import app.exceptions.IdNotFoundException;
 
 public class HotelDao
 {
@@ -43,18 +41,11 @@ public class HotelDao
     {
         try (EntityManager em = emf.createEntityManager())
         {
-
             String jpql = "SELECT h FROM Hotel h ORDER BY id";
             TypedQuery<Hotel> query = em.createQuery(jpql, Hotel.class);
             List<Hotel> hotels = query.getResultList();
-
-            List<HotelDto> hotelDtos = new LinkedList<>();
-            for (Hotel h : hotels)
-            {
-                hotelDtos.add(new HotelDto(h));
-            }
+            List<HotelDto> hotelDtos = hotels.stream().map(HotelDto::new).toList();
             return hotelDtos;
-
         }
         catch (RuntimeException e)
         {
@@ -64,7 +55,7 @@ public class HotelDao
     }
 
 
-    public HotelDto get(int id) throws RuntimeException, IdNotFoundException
+    public HotelDto get(int id) throws DaoException, IdNotFoundException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -75,10 +66,14 @@ public class HotelDao
             }
             return new HotelDto(hotel);
         }
+        catch (RuntimeException e)
+        {
+            throw new DaoException("error in get");
+        }
     }
 
     // This method takes a Hotel entity as input, and is only used to populate database in the beginning
-    public HotelDto create(Hotel hotel)
+    public HotelDto create(Hotel hotel) throws DaoException
     {
         try (EntityManager em = emf.createEntityManager())
         {
@@ -86,6 +81,10 @@ public class HotelDao
             em.persist(hotel);
             em.getTransaction().commit();
             return new HotelDto(hotel);
+        }
+        catch (RuntimeException e)
+        {
+            throw new DaoException("Error in create");
         }
     }
 
@@ -95,9 +94,11 @@ public class HotelDao
         try (EntityManager em = emf.createEntityManager())
         {
             Hotel hotel = new Hotel(hotelDto);
+
             em.getTransaction().begin();
             em.persist(hotel);
             em.getTransaction().commit();
+
             return new HotelDto(hotel);
         }
         catch (RuntimeException e)
@@ -106,12 +107,17 @@ public class HotelDao
         }
     }
 
-    public HotelDto update(int id, HotelDto hotelDto) throws DaoException
+    public HotelDto update(int id, HotelDto hotelDto) throws DaoException, IdNotFoundException
     {
         try (EntityManager em = emf.createEntityManager())
         {
-            Hotel hotel = new Hotel(hotelDto);
-            hotel.setId(id);
+            Hotel hotel = em.find(Hotel.class, id);
+            if (hotel == null)
+            {
+                throw new IdNotFoundException("No hotel with id=" + id);
+            }
+
+            hotel = new Hotel(id, hotelDto);
 
             em.getTransaction().begin();
             hotel = em.merge(hotel);
@@ -125,12 +131,16 @@ public class HotelDao
         }
     }
 
-    public HotelDto delete(int id) throws DaoException
+    public HotelDto delete(int id) throws DaoException, IdNotFoundException
     {
         try (EntityManager em = emf.createEntityManager())
         {
-            em.getTransaction().begin();
             Hotel hotel = em.find(Hotel.class, id);
+            if (hotel == null)
+            {
+                throw new IdNotFoundException("No hotel with id=" + id);
+            }
+            em.getTransaction().begin();
             em.remove(hotel);
             em.getTransaction().commit();
 

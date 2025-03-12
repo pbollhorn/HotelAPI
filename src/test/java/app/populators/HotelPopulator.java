@@ -4,12 +4,12 @@ import app.daos.HotelDao;
 import app.dtos.HotelDto;
 import app.entities.Hotel;
 import app.entities.Room;
+import app.exceptions.DaoException;
 
 public class HotelPopulator
 {
-    public static HotelDto[] populate(HotelDao hotelDao)
+    public static HotelDto[] populate(HotelDao hotelDao) throws DaoException
     {
-
         Hotel hotel1 = new Hotel("Hotel 1", "Address 1");
         hotel1.addRoom(new Room("101", 1000.0));
         hotel1.addRoom(new Room("102", 1000.0));
@@ -26,7 +26,6 @@ public class HotelPopulator
         HotelDto h2 = hotelDao.create(hotel2);
 
         return new HotelDto[]{h1, h2};
-
     }
 
 }

@@ -103,6 +103,11 @@ public class HotelControllerTest
     @Test
     void getAll()
     {
+        given()
+                .when()
+                .get("/hotel")
+                .then()
+                .statusCode(200);
     }
 
 

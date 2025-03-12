@@ -15,7 +15,6 @@ import lombok.Setter;
 @Entity
 public class Hotel
 {
-    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,7 +22,7 @@ public class Hotel
     private String name;
     private String address;
 
-    @OneToMany(mappedBy="hotel", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     Set<Room> rooms = new HashSet<>();
 
     public void addRoom(Room room)
@@ -45,6 +44,13 @@ public class Hotel
     // and also ignores rooms in hotelDto
     public Hotel(HotelDto hotelDto)
     {
+        this.name = hotelDto.name();
+        this.address = hotelDto.address();
+    }
+
+    public Hotel(int id, HotelDto hotelDto)
+    {
+        this.id = id;
         this.name = hotelDto.name();
         this.address = hotelDto.address();
     }
