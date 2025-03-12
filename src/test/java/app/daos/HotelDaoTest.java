@@ -73,12 +73,12 @@ class HotelDaoTest
     void get() throws Exception
     {
         HotelDto h = hotelDao.get(1);
-        assertNotNull(h);
         assertEquals(1, h.id());
         assertEquals("Hotel 1", h.name());
         assertEquals("Address 1", h.address());
 
         // Another way of doing the above
+        assertNotNull(h);
         assertThat(h, samePropertyValuesAs(h1));
 
         // Negative tests
@@ -130,6 +130,9 @@ class HotelDaoTest
         HotelDto h = hotelDao.delete(1);
         assertThat(h, samePropertyValuesAs(h1));
         assertEquals(1, hotelDao.getAll().size());
+
+        // Negative test
+        assertThrows(IdNotFoundException.class, () -> hotelDao.delete(0));
 
     }
 
