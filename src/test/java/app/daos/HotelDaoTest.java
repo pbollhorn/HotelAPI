@@ -91,7 +91,7 @@ class HotelDaoTest
     @Test
     void create() throws Exception
     {
-        HotelDto h = hotelDao.create(new HotelDto(null, "Hotel 3", "Address 3"));
+        HotelDto h = hotelDao.create(new HotelDto("Hotel 3", "Address 3"));
         assertEquals(3, h.id());
         assertEquals("Hotel 3", h.name());
         assertEquals("Address 3", h.address());
@@ -106,14 +106,22 @@ class HotelDaoTest
     @Test
     void update() throws Exception
     {
-        HotelDto newH1 = new HotelDto(null, "New Hotel 1", "New Address 1");
-        newH1 = hotelDao.update(1, newH1);
+        HotelDto newH1 = hotelDao.update(1, new HotelDto("Updated Hotel", "Updated Address"));
         assertEquals(1, newH1.id());
-        assertEquals("New Hotel 1", newH1.name());
-        assertEquals("New Address 1", newH1.address());
+        assertEquals("Updated Hotel", newH1.name());
+        assertEquals("Updated Address", newH1.address());
 
         // Check that the hotel is still associated with the same number of rooms
         assertEquals(5, roomDao.getAllByHotelId(1).size());
+
+        // Negative tests: Bad id
+        assertThrows(IdNotFoundException.class, () -> hotelDao.update(0, new HotelDto("Updated Hotel", "Updated Address")));
+        assertThrows(IdNotFoundException.class, () -> hotelDao.update(0, null));
+
+        // Negative tests: Good id, bad hotelDto
+        assertThrows(DaoException.class, () -> hotelDao.update(1, null));
+        assertThrows(DaoException.class, () -> hotelDao.update(1, new HotelDto(null, "Updated Address")));
+        assertThrows(DaoException.class, () -> hotelDao.update(1, new HotelDto("Updated Hotel", null)));
     }
 
     @Test
