@@ -19,10 +19,10 @@ public class Hotel
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
@@ -49,6 +49,24 @@ public class Hotel
         this.id = id;
         this.name = hotelDto.name();
         this.address = hotelDto.address();
+    }
+
+
+    public static boolean isHotelDtoValid(HotelDto hotelDto)
+    {
+        if (hotelDto.name() == null)
+            return false;
+
+        if (hotelDto.address() == null)
+            return false;
+
+        if (hotelDto.name().length() > 255)
+            return false;
+
+        if (hotelDto.address().length() > 255)
+            return false;
+
+        return true;
     }
 
 }

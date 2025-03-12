@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.dtos.HotelDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -22,6 +23,8 @@ public class HotelControllerTest
     private static final HotelDao hotelDao = HotelDao.getInstance(emf);
     private static HotelDto h1;
     private static HotelDto h2;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeAll
     static void setupAll()
@@ -113,8 +116,63 @@ public class HotelControllerTest
 
 
     @Test
-    void create()
+    void create() throws Exception
     {
+        HotelDto h = new HotelDto("New Hotel", "New Address");
+        String json = objectMapper.writeValueAsString(h);
+        given().when()
+                .body(json)
+                .post("/hotel")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(3))
+                .body("name", equalTo(h.name()))
+                .body("address", equalTo(h.address()));
+
+        // Negative test: Request body is just empty json
+        given().when()
+                .body("{}")
+                .post("/hotel")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
+
+        // Negative test: Request body is only hotel name
+        given().when()
+                .body("{\"name\": \"New Hotel\"}")
+                .post("/hotel")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
+
+        // Negative test: Request body is only hotel address
+        given().when()
+                .body("{\"address\": \"New Address\"}")
+                .post("/hotel")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
+
+        // Negative test: Hotel name is too long
+        String tooLongString = "s".repeat(256);
+        h = new HotelDto(tooLongString, "New Address");
+        json = objectMapper.writeValueAsString(h);
+        given().when()
+                .body(json)
+                .post("/hotel")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
+
+        // Negative test: Hotel address is too long
+        h = new HotelDto("New Hotel", tooLongString);
+        json = objectMapper.writeValueAsString(h);
+        given().when()
+                .body(json)
+                .post("/hotel")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
 
     }
 

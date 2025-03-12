@@ -2,6 +2,7 @@ package app.controllers;
 
 import java.util.List;
 
+import app.entities.Hotel;
 import app.exceptions.ApiException;
 import app.exceptions.IdNotFoundException;
 import io.javalin.http.Context;
@@ -58,6 +59,15 @@ public class HotelController
         {
             throw new ApiException(400, "Bad Request: Malformed json");
         }
+
+        System.out.println("HOTELDTO: " + hotelDto);
+
+        if (Hotel.isHotelDtoValid(hotelDto) == false)
+        {
+            throw new ApiException(400, "Bad Request: Missing data in json or too long data");
+        }
+
+        System.out.println(hotelDto);
 
         hotelDto = hotelDao.create(hotelDto); // ignores id in hotelDto, and puts id in hotelDto
         ctx.json(hotelDto);
