@@ -98,6 +98,8 @@ class HotelDaoTest
 
         // Negative tests
         assertThrows(DaoException.class, () -> hotelDao.create(null));
+        assertThrows(DaoException.class, () -> hotelDao.create(new HotelDto(null, "Address 4")));
+        assertThrows(DaoException.class, () -> hotelDao.create(new HotelDto("Hotel 4", null)));
     }
 
 

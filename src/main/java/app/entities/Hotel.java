@@ -19,7 +19,10 @@ public class Hotel
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable=false)
     private String name;
+
+    @Column(nullable=false)
     private String address;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
@@ -34,14 +37,7 @@ public class Hotel
         }
     }
 
-    public Hotel(String name, String address)
-    {
-        this.name = name;
-        this.address = address;
-    }
-
     // This constructor ignores id in hotelDto
-    // and also ignores rooms in hotelDto
     public Hotel(HotelDto hotelDto)
     {
         this.name = hotelDto.name();

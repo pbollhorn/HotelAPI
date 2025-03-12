@@ -1,5 +1,6 @@
 package app;
 
+import app.dtos.HotelDto;
 import jakarta.persistence.EntityManagerFactory;
 
 import app.config.ApplicationConfig;
@@ -32,7 +33,7 @@ public class Main
 
         try
         {
-            Hotel h1 = new Hotel("Mågevejens Hotel", "Mågevej 1, 2400 København NV");
+            Hotel h1 = new Hotel(new HotelDto("Mågevejens Hotel", "Mågevej 1, 2400 København NV"));
             h1.addRoom(new Room("101", 1000.0));
             h1.addRoom(new Room("102", 1000.0));
             h1.addRoom(new Room("103", 1000.0));
@@ -40,7 +41,7 @@ public class Main
             h1.addRoom(new Room("202", 1500.0));
             hotelDao.createFromEntity(h1);
 
-            Hotel h2 = new Hotel("Byens Hotel", "Bjergbygade 1, 4200 Slagelse");
+            Hotel h2 = new Hotel(new HotelDto("Byens Hotel", "Bjergbygade 1, 4200 Slagelse"));
             h2.addRoom(new Room("1A", 600.0));
             h2.addRoom(new Room("1B", 600.0));
             h2.addRoom(new Room("1C", 600.0));
