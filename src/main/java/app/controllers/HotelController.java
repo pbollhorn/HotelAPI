@@ -2,11 +2,11 @@ package app.controllers;
 
 import java.util.List;
 
+import io.javalin.http.Context;
+
 import app.entities.Hotel;
 import app.exceptions.ApiException;
 import app.exceptions.IdNotFoundException;
-import io.javalin.http.Context;
-
 import app.daos.HotelDao;
 import app.dtos.HotelDto;
 

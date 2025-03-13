@@ -1,6 +1,5 @@
 package app.controllers;
 
-import app.dtos.HotelDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import jakarta.persistence.EntityManager;
@@ -13,9 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
 import app.daos.HotelDao;
-import app.daos.RoomDao;
-import app.entities.Hotel;
-import app.entities.Room;
+import app.dtos.HotelDto;
 
 public class HotelControllerTest
 {
@@ -177,8 +174,34 @@ public class HotelControllerTest
     }
 
     @Test
-    void update()
+    void update() throws Exception
     {
+        HotelDto h = new HotelDto("Updated Hotel", "Updated Hotel");
+        String json = objectMapper.writeValueAsString(h);
+        given().when()
+                .body(json)
+                .put("/hotel/1")
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(1))
+                .body("name", equalTo(h.name()))
+                .body("address", equalTo(h.address()));
+
+        // Negative test: Test with id that does not exist
+        given().when()
+                .body(json)
+                .put("/hotel/0")
+                .then()
+                .statusCode(404)
+                .body("code", equalTo(404));
+
+        // Negative test: Test with id that is not a number
+        given()
+                .when()
+                .delete("/hotel/notnumber")
+                .then()
+                .statusCode(400)
+                .body("code", equalTo(400));
     }
 
     @Test
