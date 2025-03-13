@@ -11,12 +11,17 @@ import app.daos.RoomDao;
 import app.entities.Hotel;
 import app.entities.Room;
 import app.exceptions.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main
 {
 
     public static void main(String[] args)
     {
+        Logger logger = LoggerFactory.getLogger(Main.class);
+        logger.error("Hello from logger");
+
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
         RoomDao roomDao = RoomDao.getInstance(emf);
