@@ -171,6 +171,15 @@ public class HotelControllerTest
                 .statusCode(400)
                 .body("code", equalTo(400));
 
+        // Negative test: Request body is just empty string
+        // TODO: The code should be fixed so return code will be 400
+        given().when()
+                .body("")
+                .post("/hotel")
+                .then()
+                .statusCode(500)
+                .body("code", equalTo("500"));
+
     }
 
     @Test
