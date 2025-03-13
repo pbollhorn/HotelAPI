@@ -20,7 +20,8 @@ public class Main
     public static void main(String[] args)
     {
         Logger logger = LoggerFactory.getLogger(Main.class);
-        logger.error("Hello from logger");
+        logger.error("Hello from logger - En frisk besked");
+        System.out.println("hello from sout");
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
