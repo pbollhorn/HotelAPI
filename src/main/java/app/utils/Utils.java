@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import app.exceptions.ApiException;
+import app.exceptions.ConfigPropertyNotFoundException;
 
 public class Utils
 {
@@ -22,12 +22,12 @@ public class Utils
                 return value.trim();  // Trim whitespace
             } else
             {
-                throw new ApiException(500, String.format("Property %s not found in %s", propName, resourceName));
+                throw new ConfigPropertyNotFoundException(String.format("Property %s not found in %s", propName, resourceName));
             }
         }
         catch (IOException ex)
         {
-            throw new ApiException(500, String.format("Could not read property %s.", propName));
+            throw new ConfigPropertyNotFoundException(String.format("Could not read property %s.", propName));
         }
     }
 }
