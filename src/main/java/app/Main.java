@@ -20,7 +20,14 @@ public class Main
     public static void main(String[] args)
     {
         Logger logger = LoggerFactory.getLogger(Main.class);
-        logger.error("Hello from logger - En frisk besked");
+        logger.info("""
+                \n\n
+                ----------------------------------------------------------
+                (\\___/)                                            (\\___/)
+                (='.'=)               SERVER STARTED               (='.'=)
+                (")_(")                                            (")_(")
+                ----------------------------------------------------------\n""");
+
         System.err.println("hello from sout");
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
