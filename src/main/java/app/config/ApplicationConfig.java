@@ -1,15 +1,14 @@
 package app.config;
 
-import app.exceptions.ApiException;
-import app.exceptions.IdNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.config.JavalinConfig;
-import io.javalin.http.BadRequestResponse;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
+
+import app.exceptions.ApiException;
 
 public class ApplicationConfig
 {
@@ -75,4 +74,26 @@ public class ApplicationConfig
         });
         return applicationConfig;
     }
+
+
+    // My own method for clean shutdown, based on code from Javalin documentation:
+    // https://javalin.io/documentation#server-setup
+    public ApplicationConfig cleanShutdown()
+    {
+        app.events(event -> {
+            event.serverStopping(() -> {
+                System.out.println("Server is stopping...");
+            });
+            event.serverStopped(() -> {
+                System.out.println("Server has stopped");
+            });
+        });
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            app.stop();
+        }));
+
+        return applicationConfig;
+    }
+
 }

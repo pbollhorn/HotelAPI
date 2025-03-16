@@ -65,6 +65,7 @@ public class Main
                 .initiateServer()
                 .setRoute(Routes.getRoutes())
                 .handleException()
+                .cleanShutdown()
                 .startServer(7070);
 
 
