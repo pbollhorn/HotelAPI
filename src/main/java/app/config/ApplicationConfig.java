@@ -76,19 +76,10 @@ public class ApplicationConfig
     }
 
 
-    // My own method for clean shutdown, based on code from Javalin documentation:
+    // My own method for auto shutdown, based on code from Javalin documentation:
     // https://javalin.io/documentation#server-setup
-    public ApplicationConfig cleanShutdown()
+    public ApplicationConfig autoShutdown()
     {
-        app.events(event -> {
-            event.serverStopping(() -> {
-                System.out.println("Server is stopping...");
-            });
-            event.serverStopped(() -> {
-                System.out.println("Server has stopped");
-            });
-        });
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             app.stop();
         }));

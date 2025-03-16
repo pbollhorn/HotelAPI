@@ -21,7 +21,7 @@ public class Main
     {
         Logger logger = LoggerFactory.getLogger(Main.class);
         logger.error("Hello from logger - En frisk besked");
-        System.out.println("hello from sout");
+        System.err.println("hello from sout");
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
@@ -65,7 +65,7 @@ public class Main
                 .initiateServer()
                 .setRoute(Routes.getRoutes())
                 .handleException()
-                .cleanShutdown()
+                .autoShutdown()
                 .startServer(7070);
 
 
