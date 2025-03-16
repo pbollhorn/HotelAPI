@@ -6,25 +6,30 @@ import io.javalin.http.Context;
 
 import app.daos.RoomDao;
 import app.dtos.RoomDto;
-import app.exceptions.DaoException;
+import app.exceptions.ApiException;
 
 public class RoomController
 {
 
     private static RoomDao roomDao = RoomDao.getInstance();
 
-    public static void getAll(Context ctx)
+    public static void getAll(Context ctx) throws Exception
     {
-        int id = Integer.parseInt(ctx.pathParam("id"));
+        int hotelId;
+
         try
         {
-            List<RoomDto> roomDtos = roomDao.getAllByHotelId(id);
-            ctx.json(roomDtos);
+            hotelId = Integer.parseInt(ctx.pathParam("id"));
         }
-        catch (DaoException e)
+        catch (RuntimeException e)
         {
-            ctx.status(500);
+            throw new ApiException(400, "Bad Request: Malformed id");
         }
+
+        List<RoomDto> roomDtos = roomDao.getAllByHotelId(hotelId);
+        ctx.json(roomDtos);
+
+
     }
 
 //    private static void getById(Context ctx) {

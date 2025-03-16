@@ -3,6 +3,9 @@ package app;
 import app.dtos.HotelDto;
 import jakarta.persistence.EntityManagerFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
 import app.controllers.Routes;
@@ -11,8 +14,6 @@ import app.daos.RoomDao;
 import app.entities.Hotel;
 import app.entities.Room;
 import app.exceptions.DaoException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Main
 {

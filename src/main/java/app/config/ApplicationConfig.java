@@ -1,21 +1,17 @@
 package app.config;
 
-import app.Main;
 import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.config.JavalinConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
 
 import app.exceptions.ApiException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ApplicationConfig
 {
@@ -69,7 +65,6 @@ public class ApplicationConfig
         //StreamReadException
         //UnrecognizedPropertyException
         //JsonParseException
-//JacksonException
 
         app.exception(JacksonException.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();

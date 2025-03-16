@@ -2,7 +2,6 @@ package app.daos;
 
 import java.util.List;
 
-import app.exceptions.IdNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
@@ -16,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import app.config.HibernateConfig;
 import app.dtos.HotelDto;
 import app.exceptions.DaoException;
+import app.exceptions.IdNotFoundException;
 
 class HotelDaoTest
 {
