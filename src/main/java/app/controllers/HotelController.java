@@ -49,6 +49,8 @@ public class HotelController
 
     public static void create(Context ctx) throws Exception
     {
+        System.out.println("METODEN BEGYNDER");
+
         HotelDto hotelDto;
 
         try
@@ -57,6 +59,7 @@ public class HotelController
         }
         catch (RuntimeException e)
         {
+            System.out.println("VI FANGENDE EN FEJL");
             throw new ApiException(400, "Bad Request: Malformed json");
         }
 

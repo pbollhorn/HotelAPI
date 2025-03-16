@@ -1,6 +1,11 @@
 package app.config;
 
+import app.Main;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
@@ -9,6 +14,8 @@ import io.javalin.config.JavalinConfig;
 import static io.javalin.apibuilder.ApiBuilder.path;
 
 import app.exceptions.ApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApplicationConfig
 {
@@ -16,6 +23,7 @@ public class ApplicationConfig
     private static Javalin app;
     private static JavalinConfig javalinConfig;
     private ObjectMapper objectMapper = new ObjectMapper();
+    private static Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     private ApplicationConfig()
     {
@@ -58,12 +66,26 @@ public class ApplicationConfig
 
     public ApplicationConfig handleException()
     {
+        //StreamReadException
+        //UnrecognizedPropertyException
+        //JsonParseException
+//JacksonException
+
+        app.exception(JacksonException.class, (e, ctx) -> {
+            ObjectNode node = objectMapper.createObjectNode();
+            node.put("code", 400);
+            node.put("msg", "Bad request");
+            ctx.status(400);
+            ctx.json(node);
+            logger.warn("400 - Bad request");
+        });
         app.exception(ApiException.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();
             node.put("code", e.getCode());
             node.put("msg", e.getMessage());
             ctx.status(e.getCode());
             ctx.json(node);
+            logger.warn("{} - {}", e.getCode(), e.getMessage());
         });
         app.exception(Exception.class, (e, ctx) -> {
             ObjectNode node = objectMapper.createObjectNode();
@@ -71,6 +93,7 @@ public class ApplicationConfig
             node.put("msg", "Internal server error");
             ctx.status(500);
             ctx.json(node);
+            logger.error("500 - Internal server error");
         });
         return applicationConfig;
     }

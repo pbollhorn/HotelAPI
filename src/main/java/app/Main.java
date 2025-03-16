@@ -28,8 +28,6 @@ public class Main
                 (")_(")                                            (")_(")
                 ----------------------------------------------------------\n""");
 
-        System.err.println("hello from sout");
-
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelDao hotelDao = HotelDao.getInstance(emf);
         RoomDao roomDao = RoomDao.getInstance(emf);

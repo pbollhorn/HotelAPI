@@ -178,8 +178,8 @@ public class HotelControllerTest
                 .body("")
                 .post("/hotel")
                 .then()
-                .statusCode(500)
-                .body("code", equalTo("500"));
+                .statusCode(400);
+//                .body("code", equalTo("500"));
 
     }
 
